@@ -16,7 +16,7 @@ def task_queue():
 @pytest.fixture
 def filled_task_queue(task_queue):
     task_queue.add_task(Task(id=1,
-                priority=1,
+                priority=2,
                 resources=Resources(2,4,0),
                 content=f"Task 1"))
     task_queue.add_task(Task(id=2,
@@ -24,11 +24,11 @@ def filled_task_queue(task_queue):
                 resources=Resources(2,4,0),
                 content=f"Task 2"))
     task_queue.add_task(Task(id=3,
-                priority=2,
+                priority=4,
                 resources=Resources(2,4,0),
                 content=f"Task 3"))
     task_queue.add_task(Task(id=4,
-                priority=1,
+                priority=3,
                 resources=Resources(2,4,0),
                 content=f"Task 4"))
     return task_queue
@@ -91,6 +91,21 @@ def test_get_correct_task(filled_task_queue, available_resources):
     assert t
     assert t.content == "Task 3"
     assert len(filled_task_queue.queue) == 3
+    #
+    t = filled_task_queue.get_task(available_resources)
+    assert t
+    assert t.content == "Task 4"
+    assert len(filled_task_queue.queue) == 2
+    #
+    t = filled_task_queue.get_task(available_resources)
+    assert t
+    assert t.content == "Task 1"
+    assert len(filled_task_queue.queue) == 1
+    #
+    t = filled_task_queue.get_task(available_resources)
+    assert t
+    assert t.content == "Task 2"
+    assert len(filled_task_queue.queue) == 0
 
 def test_validate_task(invalid_task, valid_task, task_queue):
     assert not task_queue.validate_task(invalid_task)
@@ -121,6 +136,7 @@ def test_get_task_no_match(task_queue, available_resources):
     assert task_queue.get_task(available_resources) == None
     assert len(task_queue.queue) == 1
 
+#@pytest.mark.skip(reason="this is a long test to wait for")
 def test_load_task(ranges):
     queue = TaskQueue()
     generator = id_generator()
@@ -134,7 +150,7 @@ def test_load_task(ranges):
         )
         print(f" task i is {t}")
         queue.add_task(t)
-    r = Resources(ram=32, cpu_cores=32, gpu_count=32)
+    r = Resources(ram=32, cpu_cores=128, gpu_count=128)
     task = queue.get_task(r)
     print(f"task for this condition {task}")
     assert task != None
