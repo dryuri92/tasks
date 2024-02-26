@@ -20,6 +20,10 @@ or
 ```sh
 pip  install -r requirements.txt
 ```
+To run the test you should type the next command:
+```sh
+pytest ./tests
+```
 ## Usage
 
 1. Import the `TaskQueue`, `Task`, and `Resources` classes from the module.
