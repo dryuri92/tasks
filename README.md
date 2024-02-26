@@ -2,7 +2,6 @@
 
 This is a simple task queue implementation in Python. It allows adding tasks with priorities and resource requirements to a queue and retrieving the highest priority task that satisfies the available resources.
 It satisfies several conditions:
-
 * Requires a task queue with priorities and resource limits.
 * Each task has a priority and the required amount of resources to process it.
 * Publishers create tasks with specified resource limits, and put them in a task queue.
